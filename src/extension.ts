@@ -185,7 +185,7 @@ export function activate(ctx: sourcegraph.ExtensionContext): void {
                         throw new Error(`Please try another query.`)
                 }
 
-                const base64Data = Base64.encodeURI(
+const base64Data = Base64.encodeURI(csvData.map(row => row.join(',')).join('\n'))
                     csvData.map(row => row.join(',')).join('\n')
                 )
 
