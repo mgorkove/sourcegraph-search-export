@@ -136,7 +136,18 @@ export function activate(ctx: sourcegraph.ExtensionContext): void {
                                 'File external URL',
                                 'Search matches',
                             ],
-                            ...results.map(r => {
+const searchMatches = r.lineMatches
+.map(line =>
+line.offsetAndLengths
+.map(offset =>
+line.preview?.substring(
+offset[0],
+offset[0] + offset[1]
+)
+)
+.join(' ')
+)
+.join(' ')
                                 const searchMatches = r.lineMatches
                                     .map(line =>
                                         line.offsetAndLengths
@@ -185,7 +196,10 @@ export function activate(ctx: sourcegraph.ExtensionContext): void {
                         throw new Error(`Please try another query.`)
                 }
 
-                const base64Data = Base64.encodeURI(
+const base64Data = Base64.encodeURI(
+csvData.map(row => row.join(',')).join('
+')
+)
                     csvData.map(row => row.join(',')).join('\n')
                 )
 
